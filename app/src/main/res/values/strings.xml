@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Forecast</string>
+    <string name="humidity">Humidity</string>
+    <string name="windDirection">Wind direction</string>
+    <string name="windSpeed">Wind speed</string>
+    <string name="temperature">Temperature</string>
+    <string name="pressure">Pressure</string>
+</resources>
