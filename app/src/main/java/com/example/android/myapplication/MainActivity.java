@@ -1,12 +1,11 @@
 package com.example.android.myapplication;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-import com.example.android.myapplication.pojo.Weather;
 import com.example.android.myapplication.pojo.WeatherDay;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -14,7 +13,6 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.GET;
-import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 public class MainActivity extends AppCompatActivity {
@@ -27,6 +25,8 @@ public class MainActivity extends AppCompatActivity {
     private ImageView windDir;
     private TextView humidity;
     private TextView pressure;
+    private TextView city;
+    private final String cityName = "Kiev";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,12 +37,13 @@ public class MainActivity extends AppCompatActivity {
         windDir = findViewById(R.id.windDir);
         humidity = findViewById(R.id.humidity);
         pressure = findViewById(R.id.pressure);
+        city = findViewById(R.id.city);
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("https://api.openweathermap.org")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         weatherService = retrofit.create(WeatherService.class);
-        weatherService.getWeatherByCityName("donetsk", API_KEY, "metric").enqueue(new Callback<WeatherDay>() {
+        weatherService.getWeatherByCityName(cityName, API_KEY, "metric").enqueue(new Callback<WeatherDay>() {
             @Override
             public void onResponse(Call<WeatherDay> call, Response<WeatherDay> response) {
                 Log.e(LOG_TAG, Integer.toString(response.code()));
@@ -80,6 +81,8 @@ public class MainActivity extends AppCompatActivity {
         humidity.setVisibility(View.VISIBLE);
         pressure.setText(Integer.toString((int)weatherDay.getMain().getPressure()));
         pressure.setVisibility(View.VISIBLE);
+        city.setText(cityName);
+        city.setVisibility(View.VISIBLE);
     }
 
     public interface WeatherService{
