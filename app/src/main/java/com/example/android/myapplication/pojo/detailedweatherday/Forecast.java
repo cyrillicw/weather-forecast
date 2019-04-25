@@ -4,13 +4,13 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
-public class MultipleWeatherForecast {
+public class Forecast {
 
     private String cod;
     private double message;
     private Integer cnt;
     @SerializedName("list")
-    private List<WeatherDay> list = null;
+    private List<WeatherDay> weatherDays;
     private City city;
 
     public String getCod() {
@@ -37,12 +37,12 @@ public class MultipleWeatherForecast {
         this.cnt = cnt;
     }
 
-    public java.util.List<WeatherDay> getList() {
-        return list;
+    public List<WeatherDay> getWeatherDays() {
+        return weatherDays;
     }
 
-    public void setList(java.util.List<WeatherDay> list) {
-        this.list = list;
+    public void setWeatherDays(List<WeatherDay> weatherDays) {
+        this.weatherDays = weatherDays;
     }
 
     public City getCity() {

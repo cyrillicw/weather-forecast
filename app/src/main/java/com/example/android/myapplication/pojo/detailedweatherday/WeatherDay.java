@@ -1,5 +1,6 @@
-package com.example.android.myapplication.pojo;
+package com.example.android.myapplication.pojo.detailedweatherday;
 
+import java.util.Date;
 import java.util.List;
 
 public class WeatherDay {
@@ -26,6 +27,8 @@ public class WeatherDay {
     private String name;
 
     private int cod;
+
+    private Date date;
 
     public void setCoord(Coord coord){
         this.coord = coord;

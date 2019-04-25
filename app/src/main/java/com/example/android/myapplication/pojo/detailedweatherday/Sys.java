@@ -1,4 +1,4 @@
-package com.example.android.myapplication.pojo;
+package com.example.android.myapplication.pojo.detailedweatherday;
 
 public class Sys {
     private int type;
