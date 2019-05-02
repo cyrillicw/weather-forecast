@@ -1,4 +1,6 @@
-package com.example.android.myapplication;
+package com.example.android.myapplication.utils;
+
+import com.example.android.myapplication.R;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -53,7 +55,7 @@ public class Utils {
         return start + degrees + "°C";
     }
 
-    public static String dateToString(long degrees) {
-        return simpleDateFormat.format(new Date(degrees * 1000));
+    public static String dateToString(Date date) {
+        return simpleDateFormat.format(date);
     }
 }

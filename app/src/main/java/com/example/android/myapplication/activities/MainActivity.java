@@ -1,8 +1,10 @@
-package com.example.android.myapplication;
+package com.example.android.myapplication.activities;
 
 import android.os.Bundle;
-import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.viewpager.widget.ViewPager;
+import com.example.android.myapplication.R;
+import com.example.android.myapplication.adapters.WeatherPageAdapter;
 
 public class MainActivity extends AppCompatActivity {
     @Override

@@ -1,24 +1,26 @@
-package com.example.android.myapplication;
+package com.example.android.myapplication.adapters;
 
-import android.support.annotation.NonNull;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import com.example.android.myapplication.pojo.detailedweatherday.WeatherDay;
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+import com.example.android.myapplication.R;
+import com.example.android.myapplication.database.ForecastEntity;
+import com.example.android.myapplication.utils.Utils;
 
 import java.util.List;
 
 public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.ForecastItemHolder> {
-    private List<WeatherDay> weatherDays;
+    private List<ForecastEntity> weatherDays;
 
-    public ForecastAdapter (List<WeatherDay> weatherDays) {
+    public ForecastAdapter (List<ForecastEntity> weatherDays) {
         this.weatherDays = weatherDays;
     }
 
-    public void setWeatherDays(List<WeatherDay> weatherDays) {
+    public void setWeatherDays(List<ForecastEntity> weatherDays) {
         this.weatherDays = weatherDays;
         notifyDataSetChanged();
     }
@@ -53,11 +55,11 @@ public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.Foreca
             maxTemp = view.findViewById(R.id.forecast_max_temp);
         }
 
-        void setContent(WeatherDay weatherDay) {
-            this.date.setText(Utils.dateToString(weatherDay.getDt()));
-            this.icon.setImageResource(Utils.getWeatherIcon(weatherDay.getWeather().get(0).getId()));
-            this.minTemp.setText(Utils.celsiusToString((int)weatherDay.getMain().getTempMin()));
-            this.maxTemp.setText(Utils.celsiusToString((int)weatherDay.getMain().getTempMax()));
+        void setContent(ForecastEntity weatherDay) {
+            this.date.setText(Utils.dateToString(weatherDay.getDate()));
+            this.icon.setImageResource(Utils.getWeatherIcon(weatherDay.getWeatherId()));
+            this.minTemp.setText(Utils.celsiusToString((int)weatherDay.getTempMin()));
+            this.maxTemp.setText(Utils.celsiusToString((int)weatherDay.getTempMax()));
         }
     }
 }

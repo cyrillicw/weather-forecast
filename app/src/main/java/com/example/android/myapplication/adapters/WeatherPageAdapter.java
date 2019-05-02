@@ -1,8 +1,10 @@
-package com.example.android.myapplication;
+package com.example.android.myapplication.adapters;
 
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentPagerAdapter;
+import com.example.android.myapplication.fragments.CurrentWeatherFragment;
+import com.example.android.myapplication.fragments.ForecastFragment;
 
 public class WeatherPageAdapter extends FragmentPagerAdapter {
     private static final int pageNumber = 2;

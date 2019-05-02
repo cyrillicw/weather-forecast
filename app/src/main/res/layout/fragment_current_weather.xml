@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:rowCount="7"
     android:columnCount="2"
-    tools:context=".MainActivity"
+    tools:context=".activities.MainActivity"
     android:background="@color/background"
     android:id="@+id/weather_activity">
 

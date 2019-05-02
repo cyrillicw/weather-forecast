@@ -1,15 +1,17 @@
-package com.example.android.myapplication;
+package com.example.android.myapplication.fragments;
 
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import androidx.fragment.app.Fragment;
+import com.example.android.myapplication.R;
 import com.example.android.myapplication.pojo.detailedweatherday.WeatherDay;
+import com.example.android.myapplication.utils.Utils;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
