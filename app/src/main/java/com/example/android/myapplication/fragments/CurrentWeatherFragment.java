@@ -20,6 +20,10 @@ import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.GET;
 import retrofit2.http.Query;
 
+import java.util.concurrent.Executor;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -28,7 +32,6 @@ public class CurrentWeatherFragment extends Fragment {
     private static final String LOG_TAG = "Main";
     private static final String API_KEY = "c89704617764eb6d325c853555bdb333";
     private static final int OK = 200;
-
     //private ForecastService weatherService;
     private WeatherService weatherService;
     private ImageView weather;

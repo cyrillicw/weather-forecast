@@ -6,8 +6,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.room.Entity;
 import androidx.room.Room;
 import com.example.android.myapplication.R;
 import com.example.android.myapplication.adapters.ForecastAdapter;
@@ -26,10 +30,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.GET;
 import retrofit2.http.Query;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -37,12 +38,14 @@ import java.util.concurrent.Executors;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ForecastFragment extends Fragment {
+public class ForecastFragment extends Fragment implements Observer<List<ForecastEntity>> {
     private static String city = "Kiev";
     private static final String API_KEY = "c89704617764eb6d325c853555bdb333";
     private ForecastService forecastService;
     private RecyclerView recyclerView;
     private ForecastDatabase roomDatabase;
+    private ExecutorService executorService;
+    private MutableLiveData<List<ForecastEntity>> liveData;
 
     public ForecastFragment() {
         super();
@@ -59,6 +62,9 @@ public class ForecastFragment extends Fragment {
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setAdapter(new ForecastAdapter(new ArrayList<ForecastEntity>()));
         roomDatabase = Room.databaseBuilder(getContext(), ForecastDatabase.class, "weather").fallbackToDestructiveMigration().build();
+        liveData = new MutableLiveData<>();
+        liveData.observe(this, this);
+        executorService = Executors.newSingleThreadExecutor();
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("https://api.openweathermap.org")
                 .addConverterFactory(GsonConverterFactory.create(new GsonBuilder().setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES).create()))
@@ -79,8 +85,13 @@ public class ForecastFragment extends Fragment {
         getContents();
     }
 
+    @Override
+    public void onChanged(List<ForecastEntity> forecastEntities) {
+        ((ForecastAdapter)recyclerView.getAdapter()).setWeatherDays(forecastEntities);
+    }
+
     private void getContents() {
-        ExecutorService executorService = Executors.newSingleThreadExecutor();
+        // ExecutorService executorService = Executors.newSingleThreadExecutor();
         executorService.execute(new Runnable() {
             @Override
             public void run() {
@@ -98,7 +109,7 @@ public class ForecastFragment extends Fragment {
                 }
             }
         });
-        executorService.shutdown();
+        // executorService.shutdown();
     }
 
     private void loadValidData() {
@@ -106,18 +117,19 @@ public class ForecastFragment extends Fragment {
         Log.e("IN LOAD VALID DATA", Thread.currentThread().getName());
         ForecastDao forecastDao = roomDatabase.forecastDao();
         final List<ForecastEntity> forecastEntities = forecastDao.getForecasts();
-        getActivity().runOnUiThread(new Runnable() {
+        liveData.postValue(forecastEntities);
+        /*getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 ((ForecastAdapter)recyclerView.getAdapter()).setWeatherDays(forecastEntities);
             }
-        });
+        });*/
     }
 
     private class WeatherForecastCallback implements Callback<Forecast> {
         @Override
         public void onResponse(Call<Forecast> call, final Response<Forecast> response) {
-            ExecutorService executorService = Executors.newSingleThreadExecutor();
+            // ExecutorService executorService = Executors.newSingleThreadExecutor();
             executorService.execute(new Runnable() {
                 @Override
                 public void run() {
@@ -136,7 +148,7 @@ public class ForecastFragment extends Fragment {
                     loadValidData();
                 }
             });
-            executorService.shutdown();
+            // executorService.shutdown();
         }
 
         @Override
