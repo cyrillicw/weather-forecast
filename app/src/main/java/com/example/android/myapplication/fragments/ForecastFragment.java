@@ -6,13 +6,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.room.Entity;
-import androidx.room.Room;
 import com.example.android.myapplication.R;
 import com.example.android.myapplication.adapters.ForecastAdapter;
 import com.example.android.myapplication.database.ForecastDao;
@@ -20,6 +17,7 @@ import com.example.android.myapplication.database.ForecastDatabase;
 import com.example.android.myapplication.database.ForecastEntity;
 import com.example.android.myapplication.pojo.detailedweatherday.Forecast;
 import com.example.android.myapplication.pojo.detailedweatherday.WeatherDay;
+import com.example.android.myapplication.utils.Utils;
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.GsonBuilder;
 import retrofit2.Call;
@@ -30,9 +28,10 @@ import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.GET;
 import retrofit2.http.Query;
 
-import java.util.*;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
 
 
 /**
@@ -44,7 +43,6 @@ public class ForecastFragment extends Fragment implements Observer<List<Forecast
     private ForecastService forecastService;
     private RecyclerView recyclerView;
     private ForecastDatabase roomDatabase;
-    private ExecutorService executorService;
     private MutableLiveData<List<ForecastEntity>> liveData;
 
     public ForecastFragment() {
@@ -61,10 +59,9 @@ public class ForecastFragment extends Fragment implements Observer<List<Forecast
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(view.getContext(), RecyclerView.VERTICAL, false);
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setAdapter(new ForecastAdapter(new ArrayList<ForecastEntity>()));
-        roomDatabase = Room.databaseBuilder(getContext(), ForecastDatabase.class, "weather").fallbackToDestructiveMigration().build();
+        roomDatabase = ForecastDatabase.getInstance(getContext());
         liveData = new MutableLiveData<>();
         liveData.observe(this, this);
-        executorService = Executors.newSingleThreadExecutor();
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("https://api.openweathermap.org")
                 .addConverterFactory(GsonConverterFactory.create(new GsonBuilder().setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES).create()))
@@ -92,7 +89,7 @@ public class ForecastFragment extends Fragment implements Observer<List<Forecast
 
     private void getContents() {
         // ExecutorService executorService = Executors.newSingleThreadExecutor();
-        executorService.execute(new Runnable() {
+        Utils.EXECUTOR_SERVICE.execute(new Runnable() {
             @Override
             public void run() {
                 Log.e("IN GET CONTENTS", Thread.currentThread().getName());
@@ -113,7 +110,7 @@ public class ForecastFragment extends Fragment implements Observer<List<Forecast
     }
 
     private void loadValidData() {
-        Log.e("THREADS RUNNING", ""+Thread.activeCount());
+        Log.e("FORECAST", "THREADS RUNNING "+Thread.activeCount());
         Log.e("IN LOAD VALID DATA", Thread.currentThread().getName());
         ForecastDao forecastDao = roomDatabase.forecastDao();
         final List<ForecastEntity> forecastEntities = forecastDao.getForecasts();
@@ -130,7 +127,7 @@ public class ForecastFragment extends Fragment implements Observer<List<Forecast
         @Override
         public void onResponse(Call<Forecast> call, final Response<Forecast> response) {
             // ExecutorService executorService = Executors.newSingleThreadExecutor();
-            executorService.execute(new Runnable() {
+            Utils.EXECUTOR_SERVICE.execute(new Runnable() {
                 @Override
                 public void run() {
                     Log.e("IN GET RESPONSE", Thread.currentThread().getName());

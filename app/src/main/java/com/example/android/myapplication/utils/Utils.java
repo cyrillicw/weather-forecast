@@ -5,10 +5,13 @@ import com.example.android.myapplication.R;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class Utils {
 
     private static final SimpleDateFormat simpleDateFormat = new SimpleDateFormat("H:mm dd.MM", Locale.getDefault());
+    public static final ExecutorService EXECUTOR_SERVICE = Executors.newSingleThreadExecutor();
 
     public static int getWeatherIcon(int weatherId) {
         final int THUNDER = 2;
@@ -50,9 +53,10 @@ public class Utils {
         return iconId;
     }
 
-    public static String celsiusToString(int degrees) {
-        String start = degrees > 0 ? "+" : "";
-        return start + degrees + "°C";
+    public static String celsiusToString(double degrees) {
+        int iDegrees = (int)Math.round(degrees);
+        String start = iDegrees > 0 ? "+" : "";
+        return start + iDegrees + "°C";
     }
 
     public static String dateToString(Date date) {
