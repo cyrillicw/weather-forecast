@@ -1,5 +1,6 @@
 package com.example.android.myapplication.database;
 
+import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.Query;
@@ -9,10 +10,10 @@ import java.util.List;
 @Dao
 public interface ForecastDao {
     @Query("SELECT * FROM forecasts")
-    List<ForecastEntity> getForecasts();
+    LiveData<List<ForecastEntity>> getForecasts();
 
     @Query("SELECT * FROM weather")
-    CurrentWeatherEntity getCurrentWeather();
+    LiveData<CurrentWeatherEntity> getCurrentWeather();
 
     @Insert
     void addCurrentWeather(CurrentWeatherEntity currentWeatherEntity);

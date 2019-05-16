@@ -1,4 +1,4 @@
-package com.example.android.myapplication.pojo.detailedweatherday;
+package com.example.android.myapplication.database.entities.detailedweatherday;
 
 public class Coord {
     private double lon;

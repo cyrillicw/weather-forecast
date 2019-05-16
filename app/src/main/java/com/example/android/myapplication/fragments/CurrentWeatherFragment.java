@@ -15,7 +15,7 @@ import com.example.android.myapplication.R;
 import com.example.android.myapplication.database.CurrentWeatherEntity;
 import com.example.android.myapplication.database.ForecastDao;
 import com.example.android.myapplication.database.ForecastDatabase;
-import com.example.android.myapplication.pojo.detailedweatherday.WeatherDay;
+import com.example.android.myapplication.database.entities.detailedweatherday.WeatherDay;
 import com.example.android.myapplication.utils.Utils;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -69,11 +69,6 @@ public class CurrentWeatherFragment extends Fragment implements Observer<Current
         roomDatabase = ForecastDatabase.getInstance(getContext());
         liveData = new MutableLiveData<>();
         liveData.observe(this, this);
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("https://api.openweathermap.org")
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-        weatherService = retrofit.create(WeatherService.class);
         getContents();
         return view;
     }
@@ -103,7 +98,6 @@ public class CurrentWeatherFragment extends Fragment implements Observer<Current
         Utils.EXECUTOR_SERVICE.execute(new Runnable() {
             @Override
             public void run() {
-                roomDatabase.forecastDao().clearCurrentWeather();
                 Log.e("IN GET CONTENTS", Thread.currentThread().getName());
                 ForecastDao forecastDao = roomDatabase.forecastDao();
                 final CurrentWeatherEntity currentWeatherEntity = forecastDao.getCurrentWeather();
@@ -135,11 +129,6 @@ public class CurrentWeatherFragment extends Fragment implements Observer<Current
                 ((ForecastAdapter)recyclerView.getAdapter()).setWeatherDays(forecastEntities);
             }
         });*/
-    }
-
-    public interface WeatherService{
-        @GET("/data/2.5/weather")
-        Call<WeatherDay> getWeatherByCityName(@Query("q")String city, @Query("appId") String appID, @Query("units") String units);
     }
 
     private class WeatherDayCallback implements Callback<WeatherDay> {

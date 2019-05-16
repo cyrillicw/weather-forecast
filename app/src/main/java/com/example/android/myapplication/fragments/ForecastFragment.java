@@ -15,8 +15,8 @@ import com.example.android.myapplication.adapters.ForecastAdapter;
 import com.example.android.myapplication.database.ForecastDao;
 import com.example.android.myapplication.database.ForecastDatabase;
 import com.example.android.myapplication.database.ForecastEntity;
-import com.example.android.myapplication.pojo.detailedweatherday.Forecast;
-import com.example.android.myapplication.pojo.detailedweatherday.WeatherDay;
+import com.example.android.myapplication.database.entities.detailedweatherday.Forecast;
+import com.example.android.myapplication.database.entities.detailedweatherday.WeatherDay;
 import com.example.android.myapplication.utils.Utils;
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.GsonBuilder;
@@ -69,11 +69,6 @@ public class ForecastFragment extends Fragment implements Observer<List<Forecast
         forecastService = retrofit.create(ForecastService.class);
         Log.e("IN ON CREATE", Thread.currentThread().getName());
         return view;
-    }
-
-    public interface ForecastService {
-        @GET("/data/2.5/forecast")
-        Call<Forecast> getWeatherByCityName(@Query("q")String city, @Query("appId") String appID, @Query("units") String units);
     }
 
     @Override
