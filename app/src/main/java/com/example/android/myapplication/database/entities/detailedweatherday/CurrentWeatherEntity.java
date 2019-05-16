@@ -1,4 +1,4 @@
-package com.example.android.myapplication.database;
+package com.example.android.myapplication.database.entities.detailedweatherday;
 
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;

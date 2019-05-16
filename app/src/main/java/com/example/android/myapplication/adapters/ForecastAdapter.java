@@ -8,7 +8,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.android.myapplication.R;
-import com.example.android.myapplication.database.ForecastEntity;
+import com.example.android.myapplication.database.entities.detailedweatherday.ForecastEntity;
 import com.example.android.myapplication.utils.Utils;
 
 import java.util.List;

@@ -4,26 +4,43 @@ import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.Query;
+import androidx.room.Transaction;
+import com.example.android.myapplication.database.entities.detailedweatherday.CurrentWeatherEntity;
+import com.example.android.myapplication.database.entities.detailedweatherday.ForecastEntity;
 
 import java.util.List;
 
 @Dao
-public interface ForecastDao {
+public abstract class ForecastDao {
     @Query("SELECT * FROM forecasts")
-    LiveData<List<ForecastEntity>> getForecasts();
+    abstract LiveData<List<ForecastEntity>> getForecasts();
 
     @Query("SELECT * FROM weather")
-    LiveData<CurrentWeatherEntity> getCurrentWeather();
+    abstract LiveData<CurrentWeatherEntity> getCurrentWeather();
 
     @Insert
-    void addCurrentWeather(CurrentWeatherEntity currentWeatherEntity);
+    abstract void addCurrentWeather(CurrentWeatherEntity currentWeatherEntity);
 
     @Insert
-    void addForecast(ForecastEntity forecastEntity);
+    abstract void addForecast(ForecastEntity forecastEntity);
 
     @Query("DELETE FROM forecasts")
-    void clearForecasts();
+    abstract void clearForecasts();
 
     @Query("DELETE FROM weather")
-    void clearCurrentWeather();
+    abstract void clearCurrentWeather();
+
+    @Insert
+    abstract void addForecasts(List<ForecastEntity> forecastEntities);
+
+    @Transaction
+    void updateForecast(List<ForecastEntity> forecastEntities) {
+        addForecasts(forecastEntities);
+    }
+
+    @Transaction
+    void updateCurrentWeather(CurrentWeatherEntity currentWeatherEntity) {
+        clearCurrentWeather();
+        addCurrentWeather(currentWeatherEntity);
+    }
 }
