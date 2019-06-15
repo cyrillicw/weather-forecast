@@ -3,6 +3,9 @@ package com.example.android.myapplication.database;
 import android.content.Context;
 import android.util.Log;
 import androidx.lifecycle.LiveData;
+import androidx.work.OneTimeWorkRequest;
+import androidx.work.WorkManager;
+import com.example.android.myapplication.database.entities.SyncWorker;
 import com.example.android.myapplication.database.entities.detailedweatherday.CurrentWeatherEntity;
 import com.example.android.myapplication.database.entities.detailedweatherday.Forecast;
 import com.example.android.myapplication.database.entities.detailedweatherday.ForecastEntity;
@@ -82,5 +85,10 @@ public class Repository {
                 }
             }
         });
+    }
+
+    public void sheldueUpdate() {
+        OneTimeWorkRequest oneTimeWorkRequest = new OneTimeWorkRequest.Builder(SyncWorker.class).build();
+        WorkManager.getInstance().enqueue(oneTimeWorkRequest);
     }
 }
