@@ -10,7 +10,7 @@
         android:text="30 03 2013"
         android:layout_centerInParent="true"
         android:layout_alignParentTop="true"
-        android:textSize="30sp" />
+        android:textSize="25sp" />
 
     <View
         android:id="@+id/forecast_horizontal_line"
@@ -33,7 +33,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="@color/white"
-        android:textSize="40sp"
+        android:textSize="30sp"
         android:layout_toStartOf="@+id/slash"
         android:layout_below="@+id/forecast_horizontal_line"/>
 
@@ -42,7 +42,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="@color/white"
-        android:textSize="40sp"
+        android:textSize="30sp"
         android:text="/"
         android:layout_toStartOf="@+id/forecast_max_temp"
         android:layout_below="@+id/forecast_horizontal_line"/>
@@ -52,7 +52,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="@color/white"
-        android:textSize="40sp"
+        android:textSize="30sp"
         android:layout_alignParentEnd="true"
         android:layout_below="@+id/forecast_horizontal_line"
         android:paddingBottom="50dp"/>
