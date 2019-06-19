@@ -54,6 +54,8 @@ public class CurrentWeatherFragment extends Fragment {
         humidity = view.findViewById(R.id.humidity);
         pressure = view.findViewById(R.id.pressure);
         city = view.findViewById(R.id.city);
+        Log.e("WEATHER", "ONCREATEVIEW");
+        Log.e("TAG", getTag());
         getContents();
         return view;
     }
@@ -63,7 +65,6 @@ public class CurrentWeatherFragment extends Fragment {
     }
 
     private void onDataChanged(CurrentWeatherEntity currentWeatherEntity) {
-        Log.e("CuurentWeather", "" + (currentWeatherEntity == null));
         if (currentWeatherEntity != null) {
             Calendar minCalendar = Calendar.getInstance();
             minCalendar.add(Calendar.HOUR_OF_DAY, -1);

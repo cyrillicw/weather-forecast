@@ -2,8 +2,11 @@ package com.example.android.myapplication.ui.activities;
 
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.util.Log;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentStatePagerAdapter;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProviders;
@@ -14,28 +17,40 @@ import com.example.android.myapplication.ui.fragments.CurrentWeatherFragment;
 import com.example.android.myapplication.ui.fragments.ForecastFragment;
 import com.example.android.myapplication.viewmodels.MainViewModel;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class MainActivity extends AppCompatActivity {
     private MainViewModel viewModel;
-    @Override
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         viewModel = ViewModelProviders.of(this).get(MainViewModel.class);
-        int orientation = getResources().getConfiguration().orientation;
+        fillFragments();
+    }
+
+    private void fillFragments() {
         FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        Log.e("MainActivity", "Fragments size before" + fragmentManager.getFragments().size());
+        for (Fragment fragment : getSupportFragmentManager().getFragments()) {
+            fragmentManager.beginTransaction().remove(fragment).commit();
+        }
+        Log.e("MainActivity", "Fragments size after " + fragmentManager.getFragments().size());
+        int orientation = getResources().getConfiguration().orientation;
         if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            fragmentTransaction.add(R.id.weather_layout, new CurrentWeatherFragment());
-            fragmentTransaction.add(R.id.forecast_layout, new ForecastFragment());
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.replace(R.id.weather_layout, new CurrentWeatherFragment(), "current");
+            fragmentTransaction.replace(R.id.forecast_layout, new ForecastFragment(), "forecast");
+            fragmentTransaction.commit();
         }
         else {
             ViewPager viewPager = findViewById(R.id.pager);
-            WeatherPageAdapter weatherPageAdapter = new WeatherPageAdapter(getSupportFragmentManager());
+            WeatherPageAdapter weatherPageAdapter = new  WeatherPageAdapter(getSupportFragmentManager());
             viewPager.setAdapter(weatherPageAdapter);
             viewPager.addOnPageChangeListener(new WeatherPageChangedListener());
             viewPager.setCurrentItem(viewModel.getViewPagerPosition(), false);
         }
-        fragmentTransaction.commit();
     }
 
     private class WeatherPageChangedListener implements ViewPager.OnPageChangeListener {

@@ -42,7 +42,7 @@ public class ForecastFragment extends Fragment {
         recyclerView.setAdapter(new ForecastAdapter(new ArrayList<ForecastEntity>()));
         ForecastViewModel viewModel = ViewModelProviders.of(this).get(ForecastViewModel.class);
         liveData = viewModel.getForecastData();
-        Log.e("IN ON CREATE", Thread.currentThread().getName());
+        Log.e("FORECAST", "ONCREATEVIEW");
         getContents();
         return view;
     }

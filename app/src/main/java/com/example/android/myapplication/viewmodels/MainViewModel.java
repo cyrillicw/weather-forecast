@@ -1,6 +1,7 @@
 package com.example.android.myapplication.viewmodels;
 
 import androidx.lifecycle.ViewModel;
+import com.example.android.myapplication.data.Repository;
 
 public class MainViewModel extends ViewModel {
     private int viewPagerPosition;
